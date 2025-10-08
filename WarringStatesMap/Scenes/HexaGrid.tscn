@@ -5,4 +5,4 @@
 
 [node name="HexaGrid" type="Node3D"]
 script = ExtResource("1_y6gto")
-CellPrefeb = ExtResource("2_801fl")
+CellPrefab = ExtResource("2_801fl")
