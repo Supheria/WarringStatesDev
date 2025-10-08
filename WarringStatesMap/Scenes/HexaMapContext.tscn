@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://mpo3rkjfale6"]
+
+[ext_resource type="PackedScene" uid="uid://dkiah83yhhfwu" path="res://Assets/Meshes/Units/UnitProto.glb" id="1_m3tgc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_m3tgc"]
+
+[node name="World" type="Node3D"]
+
+[node name="Scene" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Scene"]
+transform = Transform3D(0.173648, -0.633022, 0.754407, 0, 0.766044, 0.642788, -0.984808, -0.111619, 0.133022, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_mode = 0
+sky_mode = 1
+
+[node name="CameraRoot" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraRoot"]
+
+[node name="ForTest" type="Node3D" parent="."]
+
+[node name="UnitProto" parent="ForTest" instance=ExtResource("1_m3tgc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0146775, -0.450499, -1.99094)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ForTest"]
+transform = Transform3D(3.115, 0, 0, 0, -0.065, 0, 0, 0, 4.115, 0, -0.411939, -0.801938)
+mesh = SubResource("BoxMesh_m3tgc")
+skeleton = NodePath("")

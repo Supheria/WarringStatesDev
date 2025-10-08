@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="WarringStatesMap"
+run/main_scene="uid://mpo3rkjfale6"
 config/features=PackedStringArray("4.4", "C#", "Mobile")
 config/icon="res://icon.svg"
 
@@ -21,3 +22,4 @@ project/assembly_name="WarringStatesMap"
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
