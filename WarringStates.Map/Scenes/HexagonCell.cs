@@ -1,6 +1,6 @@
 using Godot;
 
-namespace HexagonMap;
+namespace WarringStates.Map;
 
 public partial class HexagonCell : Node3D
 {

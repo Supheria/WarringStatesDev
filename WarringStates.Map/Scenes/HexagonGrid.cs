@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-namespace HexagonMap;
+namespace WarringStates.Map;
 
 public partial class HexagonGrid : Node3D
 {

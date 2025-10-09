@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarringStatesMap", "WarringStatesMap.csproj", "{88F9E4D2-006B-4C31-B1FF-8DC9F81F836C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarringStates.Map", "WarringStates.Map.csproj", "{88F9E4D2-006B-4C31-B1FF-8DC9F81F836C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
