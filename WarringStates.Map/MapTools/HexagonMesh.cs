@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Godot;
 
 namespace WarringStates.Map;
@@ -8,7 +7,6 @@ public sealed partial class HexagonMesh : MeshInstance3D
 {
     private List<Vector3> Vertices { get; } = [];
     private List<int> Indices { get; } = [];
-    private int Index { get; set; }
 
     public void Triangulate(ICollection<HexagonCell> cells)
     {
@@ -39,13 +37,14 @@ public sealed partial class HexagonMesh : MeshInstance3D
 
     private void UpdateMesh()
     {
-        Mesh ??= new ArrayMesh();
-        if (Mesh is not ArrayMesh mesh)
-            throw new Exception();
-        var surfaceArray = new Godot.Collections.Array();
+        using var surfaceArray = new Godot.Collections.Array();
         surfaceArray.Resize((int)Mesh.ArrayType.Max);
         surfaceArray[(int)Mesh.ArrayType.Vertex] = Vertices.ToArray();
         surfaceArray[(int)Mesh.ArrayType.Index] = Indices.ToArray();
-        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, surfaceArray);
+        var surfaceTool = new SurfaceTool();
+        surfaceTool.CreateFromArrays(surfaceArray);
+        surfaceTool.GenerateNormals();
+        Mesh = surfaceTool.Commit();
+        surfaceTool.Free();
     }
 }
