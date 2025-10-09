@@ -33,9 +33,9 @@ func move_camera(delta):
 		move_vector += parent.transform.basis.x
 	## Rotation
 	if Input.is_action_pressed("RotateCameraLeft"):
-		parent.rotate(Vector3.UP, 0.01)
-	if Input.is_action_pressed("RotateCameraRight"):
 		parent.rotate(Vector3.UP, -0.01)
+	if Input.is_action_pressed("RotateCameraRight"):
+		parent.rotate(Vector3.UP, 0.01)
 	## Height
 	if Input.is_action_pressed("CameraUp"):
 		move_vector += Vector3.UP
