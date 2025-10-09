@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 
 namespace WarringStates.Map;
 
-public partial class HexagonGrid : Node3D
+public sealed partial class HexagonGrid : Node3D
 {
     [Export]
     public int Width { get; set; } = 6;
@@ -14,16 +15,22 @@ public partial class HexagonGrid : Node3D
     [Export]
     public PackedScene? CellPrefab { get; set; }
 
+    private List<HexagonCell> Cells { get; } = [];
+
+    private HexagonMesh? Mesh { get; set; }
+
     public override void _Ready()
     {
         for (var x = 0; x < Width; x++)
         {
             for (var z = 0; z < Height; z++)
             {
-                // TODO: Cells is useless here
                 CreateCell(x, z);
             }
         }
+        Mesh = new HexagonMesh();
+        Mesh.Triangulate(Cells);
+        AddChild(Mesh);
     }
 
     public override void _Process(double delta) { }
@@ -42,5 +49,6 @@ public partial class HexagonGrid : Node3D
         cell.Position = pos;
         AddChild(cell);
         cell.SetContent($"{x}\n{z}");
+        Cells.Add(cell);
     }
 }

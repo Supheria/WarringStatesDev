@@ -11,6 +11,7 @@ size = Vector2(10, 10)
 script = ExtResource("1_qtq0s")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("PlaneMesh_qtq0s")
 
 [node name="Content" type="Label3D" parent="."]

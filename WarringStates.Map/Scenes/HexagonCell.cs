@@ -2,7 +2,7 @@ using Godot;
 
 namespace WarringStates.Map;
 
-public partial class HexagonCell : Node3D
+public sealed partial class HexagonCell : Node3D
 {
 	private Label3D? Content { get; set; }
 

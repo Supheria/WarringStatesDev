@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://mpo3rkjfale6"]
+[gd_scene load_steps=5 format=3 uid="uid://mpo3rkjfale6"]
 
+[ext_resource type="Script" uid="uid://pwopqq1ac4ae" path="res://Scenes/camera_3d.gd" id="1_c61vs"]
 [ext_resource type="PackedScene" uid="uid://dkiah83yhhfwu" path="res://Assets/Meshes/Units/UnitProto.glb" id="1_wotyu"]
 [ext_resource type="PackedScene" uid="uid://ctd6d700nup07" path="res://Scenes/HexagonGrid.tscn" id="2_tu82p"]
 
@@ -16,9 +17,11 @@ directional_shadow_mode = 0
 sky_mode = 1
 
 [node name="CameraRoot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 52, 30, 100)
+metadata/_edit_group_ = true
 
 [node name="Camera3D" type="Camera3D" parent="CameraRoot"]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 52, 50, 78)
+script = ExtResource("1_c61vs")
 
 [node name="ForTest" type="Node3D" parent="."]
 
