@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://mpo3rkjfale6"]
 
-[ext_resource type="PackedScene" uid="uid://dkiah83yhhfwu" path="res://Assets/Meshes/Units/UnitProto.glb" id="1_m3tgc"]
-[ext_resource type="PackedScene" uid="uid://ctd6d700nup07" path="res://Scenes/HexaGrid.tscn" id="2_etie5"]
+[ext_resource type="PackedScene" uid="uid://dkiah83yhhfwu" path="res://Assets/Meshes/Units/UnitProto.glb" id="1_wotyu"]
+[ext_resource type="PackedScene" uid="uid://ctd6d700nup07" path="res://Scenes/HexagonGrid.tscn" id="2_tu82p"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_m3tgc"]
 
@@ -22,7 +22,7 @@ transform = Transform3D(1, 0, 0, 0, 0.707106, 0.707106, 0, -0.707106, 0.707106, 
 
 [node name="ForTest" type="Node3D" parent="."]
 
-[node name="UnitProto" parent="ForTest" instance=ExtResource("1_m3tgc")]
+[node name="UnitProto" parent="ForTest" instance=ExtResource("1_wotyu")]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ForTest"]
 transform = Transform3D(3.115, 0, 0, 0, -0.065, 0, 0, 0, 4.115, 0, -0.411939, -0.801938)
@@ -30,4 +30,4 @@ visible = false
 mesh = SubResource("BoxMesh_m3tgc")
 skeleton = NodePath("")
 
-[node name="HexaGrid" parent="." instance=ExtResource("2_etie5")]
+[node name="HexagonGrid" parent="." instance=ExtResource("2_tu82p")]

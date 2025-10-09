@@ -1,9 +1,9 @@
 using System;
 using Godot;
 
-namespace HexaMap;
+namespace HexagonMap;
 
-public partial class HexaGrid : Node3D
+public partial class HexagonGrid : Node3D
 {
 	[Export]
 	public int Width { get; set; } = 6;
@@ -12,13 +12,10 @@ public partial class HexaGrid : Node3D
 	public int Height { get; set; } = 6;
 
 	[Export]
-	public PackedScene CellPrefab { get; set; }
-
-	// private HexaCell[] Cells { get; set; }
+	public PackedScene? CellPrefab { get; set; }
 
 	public override void _Ready()
 	{
-		// Cells = new HexaCell[Width * Height];
 		for (var x = 0; x < Width; x++)
 		{
 			for (var z = 0; z < Height; z++)
@@ -40,16 +37,11 @@ public partial class HexaGrid : Node3D
 			Y = 0f,
 			Z = z * edgeLen,
 		};
-		var cell = CellPrefab.Instantiate<HexaCell>();
+		if (CellPrefab is null)
+			throw new NullReferenceException();
+		var cell = CellPrefab.Instantiate<HexagonCell>();
 		cell.Position = pos;
-		cell.SetContent($"{x}\n{z}");
 		AddChild(cell);
-
-		// var label = new Label3D();
-		// label.Shaded = false;
-		// label.Text = $"{x}\n{z}";
-		// label.Position = pos;
-		// label.RotateX(float.DegreesToRadians(-90));
-		// AddChild(label);
+		cell.SetContent($"{x}\n{z}");
 	}
 }
