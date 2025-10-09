@@ -45,6 +45,5 @@ public sealed partial class HexagonMesh : MeshInstance3D
         surfaceTool.CreateFromArrays(surfaceArray);
         surfaceTool.GenerateNormals();
         Mesh = surfaceTool.Commit();
-        surfaceTool.Free();
     }
 }
