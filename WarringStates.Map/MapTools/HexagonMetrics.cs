@@ -11,9 +11,10 @@ public static class HexagonMetrics
     [
         new(InnerRadius, 0f, 0.5f * OuterRadius),
         new(0f, 0f, OuterRadius),
-        new(InnerRadius, 0f, -0.5f * OuterRadius),
-        new(0f, 0f, -OuterRadius),
+        new(-InnerRadius, 0f, 0.5f * OuterRadius),
         new(-InnerRadius, 0f, -0.5f * OuterRadius),
-        new(-InnerRadius, 0f, 0.5f * OuterRadius)
+        new(0f, 0f, -OuterRadius),
+        new(InnerRadius, 0f, -0.5f * OuterRadius),
+        new(InnerRadius, 0f, 0.5f * OuterRadius),
     ];
 }

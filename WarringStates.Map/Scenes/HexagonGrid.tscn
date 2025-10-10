@@ -1,8 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://ctd6d700nup07"]
+[gd_scene load_steps=4 format=3 uid="uid://ctd6d700nup07"]
 
 [ext_resource type="Script" uid="uid://d17mdpx5v2m3y" path="res://Scenes/HexagonGrid.cs" id="1_mgx0b"]
 [ext_resource type="PackedScene" uid="uid://do0oawdvunra4" path="res://Scenes/HexagonCell.tscn" id="2_xmqn8"]
+[ext_resource type="Material" uid="uid://d25u4sjjrvd7x" path="res://Assets/Materials/Red.tres" id="3_xmbrk"]
 
 [node name="HexagonGrid" type="Node3D"]
 script = ExtResource("1_mgx0b")
 CellPrefab = ExtResource("2_xmqn8")
+CellMeterial = ExtResource("3_xmbrk")

@@ -6,20 +6,26 @@ namespace WarringStates.Map;
 public sealed partial class HexagonMesh : MeshInstance3D
 {
     private List<Vector3> Vertices { get; } = [];
+    private List<Vector3> Normals { get; } = [];
     private List<int> Indices { get; } = [];
+    private List<Vector3> TestVertices { get; } = [];
 
     public void Triangulate(ICollection<HexagonCell> cells)
     {
         Vertices.Clear();
         Indices.Clear();
+        Normals.Clear();
         foreach (var cell in cells)
         {
             var center = cell.Position;
-            AddTriangle(
-                center,
-                center + HexagonMetrics.Corners[0],
-                center + HexagonMetrics.Corners[1]
-            );
+            for (var i = 0; i < 6; i++)
+            {
+                AddTriangle(
+                    center,
+                    center + HexagonMetrics.Corners[i],
+                    center + HexagonMetrics.Corners[i + 1]
+                );
+            }
         }
         UpdateMesh();
     }
@@ -30,9 +36,24 @@ public sealed partial class HexagonMesh : MeshInstance3D
         Vertices.Add(v1);
         Vertices.Add(v2);
         Vertices.Add(v3);
+        var normal = GetTriangleNormal(v1, v2, v3);
+        Normals.Add(normal);
+        Normals.Add(normal);
+        Normals.Add(normal);
         Indices.Add(index);
         Indices.Add(index + 1);
         Indices.Add(index + 2);
+        TestVertices.Add(v1 - Vector3.Up * 10);
+        TestVertices.Add(v2 - Vector3.Up * 10);
+        TestVertices.Add(v3 - Vector3.Up * 10);
+    }
+    
+    private static Vector3 GetTriangleNormal(Vector3 v1, Vector3 v2, Vector3 v3)
+    {
+        var side1 = v2 - v1;
+        var side2 = v3 - v1;
+        var normal = side2.Cross(side1);
+        return normal;
     }
 
     private void UpdateMesh()
@@ -40,10 +61,16 @@ public sealed partial class HexagonMesh : MeshInstance3D
         using var surfaceArray = new Godot.Collections.Array();
         surfaceArray.Resize((int)Mesh.ArrayType.Max);
         surfaceArray[(int)Mesh.ArrayType.Vertex] = Vertices.ToArray();
+        surfaceArray[(int)Mesh.ArrayType.Normal] = Normals.ToArray();
         surfaceArray[(int)Mesh.ArrayType.Index] = Indices.ToArray();
-        var surfaceTool = new SurfaceTool();
-        surfaceTool.CreateFromArrays(surfaceArray);
-        surfaceTool.GenerateNormals();
-        Mesh = surfaceTool.Commit();
+        // var surfaceTool = new SurfaceTool();
+        // surfaceTool.CreateFromArrays(surfaceArray);
+        // surfaceTool.GenerateNormals();
+        // var mesh = surfaceTool.Commit();
+        var mesh = new ArrayMesh();
+        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, surfaceArray);
+        surfaceArray[(int)Mesh.ArrayType.Vertex] = TestVertices.ToArray();
+        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, surfaceArray);
+        Mesh = mesh;
     }
 }
