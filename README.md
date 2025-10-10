@@ -1,6 +1,9 @@
-# WarringStatesMap
+# WarringStatesDev
 
 - 由于Avalonia-OpenGL的性能存在问题，因此前端移至Godot开发，后续逐步整合后端
+
+## WarringStates.Map
+
 - 特性：
   - 六边形地图
   - 程序化生成地形
