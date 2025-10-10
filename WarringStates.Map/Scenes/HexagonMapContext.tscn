@@ -1,12 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://mpo3rkjfale6"]
+[gd_scene load_steps=6 format=3 uid="uid://mpo3rkjfale6"]
 
 [ext_resource type="Script" uid="uid://pwopqq1ac4ae" path="res://Scenes/camera_3d.gd" id="1_c61vs"]
+[ext_resource type="Script" uid="uid://bm4hm5q6185bg" path="res://Scenes/HexagonMapContext.cs" id="1_p8uqv"]
 [ext_resource type="PackedScene" uid="uid://dkiah83yhhfwu" path="res://Assets/Meshes/Units/UnitProto.glb" id="1_wotyu"]
 [ext_resource type="PackedScene" uid="uid://ctd6d700nup07" path="res://Scenes/HexagonGrid.tscn" id="2_tu82p"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_m3tgc"]
 
-[node name="World" type="Node3D"]
+[node name="HexagonMapContext" type="Node3D"]
+script = ExtResource("1_p8uqv")
 
 [node name="Scene" type="Node3D" parent="."]
 

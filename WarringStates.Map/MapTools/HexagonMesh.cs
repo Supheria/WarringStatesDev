@@ -8,7 +8,6 @@ public sealed partial class HexagonMesh : MeshInstance3D
     private List<Vector3> Vertices { get; } = [];
     private List<Vector3> Normals { get; } = [];
     private List<int> Indices { get; } = [];
-    private List<Vector3> TestVertices { get; } = [];
 
     public void Triangulate(ICollection<HexagonCell> cells)
     {
@@ -33,6 +32,9 @@ public sealed partial class HexagonMesh : MeshInstance3D
     private void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
     {
         var index = Vertices.Count;
+        Indices.Add(index);
+        Indices.Add(index + 1);
+        Indices.Add(index + 2);
         Vertices.Add(v1);
         Vertices.Add(v2);
         Vertices.Add(v3);
@@ -40,12 +42,6 @@ public sealed partial class HexagonMesh : MeshInstance3D
         Normals.Add(normal);
         Normals.Add(normal);
         Normals.Add(normal);
-        Indices.Add(index);
-        Indices.Add(index + 1);
-        Indices.Add(index + 2);
-        TestVertices.Add(v1 - Vector3.Up * 10);
-        TestVertices.Add(v2 - Vector3.Up * 10);
-        TestVertices.Add(v3 - Vector3.Up * 10);
     }
     
     private static Vector3 GetTriangleNormal(Vector3 v1, Vector3 v2, Vector3 v3)
@@ -63,13 +59,7 @@ public sealed partial class HexagonMesh : MeshInstance3D
         surfaceArray[(int)Mesh.ArrayType.Vertex] = Vertices.ToArray();
         surfaceArray[(int)Mesh.ArrayType.Normal] = Normals.ToArray();
         surfaceArray[(int)Mesh.ArrayType.Index] = Indices.ToArray();
-        // var surfaceTool = new SurfaceTool();
-        // surfaceTool.CreateFromArrays(surfaceArray);
-        // surfaceTool.GenerateNormals();
-        // var mesh = surfaceTool.Commit();
         var mesh = new ArrayMesh();
-        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, surfaceArray);
-        surfaceArray[(int)Mesh.ArrayType.Vertex] = TestVertices.ToArray();
         mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, surfaceArray);
         Mesh = mesh;
     }
