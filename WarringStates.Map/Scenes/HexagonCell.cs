@@ -4,18 +4,25 @@ namespace WarringStates.Map;
 
 public sealed partial class HexagonCell : Node3D
 {
-	private Label3D? Content { get; set; }
+	public string Content
+	{
+		get => _content;
+		set
+		{
+			_content = value;
+			if (ContentLabel is not null)
+				ContentLabel.Text = _content;
+		}
+	}
+	private string _content = "Empty";
+	private Label3D? ContentLabel { get; set; }
+	public HexagonCoordinate Coordinate { get; set; }
 
 	public override void _Ready()
 	{
-		Content = GetNode<Label3D>(nameof(Content));
+		ContentLabel = GetNode<Label3D>(nameof(Content));
+		ContentLabel.Text = Content;
 	}
 
 	public override void _Process(double delta) { }
-
-	public void SetContent(string content)
-	{
-		if (Content is not null)
-			Content.Text = content;
-	}
 }

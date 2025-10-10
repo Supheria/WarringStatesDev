@@ -34,6 +34,20 @@ public sealed partial class HexagonGrid : Node3D
             0,
             new StandardMaterial3D { AlbedoColor = Colors.GreenYellow }
         );
+        
+        
+        // Mesh.CreateTrimeshCollision();
+        var body = new StaticBody3D();
+        // var id = body.CreateShapeOwner(new GodotObject());
+        var shape = Mesh.Mesh.CreateTrimeshShape();
+        // shape.BackfaceCollision = false;
+        var collision = new CollisionShape3D();
+        collision.Shape = shape;
+        body.AddChild(collision);
+        // body.ShapeOwnerAddShape(id, shape);
+        Mesh.AddChild(body);
+        
+        
         AddChild(Mesh);
     }
 
@@ -43,7 +57,7 @@ public sealed partial class HexagonGrid : Node3D
     {
         var pos = new Vector3
         {
-            X = (x + z * 0.5f - z / 2) * HexagonMetrics.InnerRadius * 2f,
+            X = (x + z * 0.5f) * HexagonMetrics.InnerRadius * 2f,
             Y = 0f,
             Z = z * HexagonMetrics.OuterRadius * 1.5f,
         };
@@ -51,8 +65,19 @@ public sealed partial class HexagonGrid : Node3D
             throw new NullReferenceException();
         var cell = CellPrefab.Instantiate<HexagonCell>();
         cell.Position = pos;
+        cell.Coordinate = HexagonCoordinate.FromOffsetCoordinate(x, z);
+        cell.Content = cell.Coordinate.ToString();
         AddChild(cell);
-        cell.SetContent($"{x}\n{z}");
         Cells.Add(cell);
+    }
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        // if (@event is InputEventMouseButton mouse)
+        // {
+        //     var camera = GetViewport().GetCamera3D();
+        //     var inputRay = 
+        // }
+        
     }
 }
