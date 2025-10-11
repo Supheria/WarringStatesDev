@@ -1,32 +1,38 @@
-﻿using System;
-using System.Buffers;
+using System;
 using System.Collections.Generic;
 using Godot;
 
 namespace WarringStates.Map;
 
-public sealed partial class HexagonMesh : MeshInstance3D
+public partial class HexagonMesh : MeshInstance3D
 {
+    public event CollisionObject3D.InputEventEventHandler? UnhandledInputEvent;
     private List<Vector3> Vertices { get; } = [];
     private List<Vector3> Normals { get; } = [];
     private List<int> Indices { get; } = [];
     private CollisionShape3D? CollisionShape { get; set; }
-    public event CollisionObject3D.InputEventEventHandler InputEvent;
 
     public override void _Ready()
     {
-        CollisionShape ??= new CollisionShape3D();
-        var staticBody = new StaticBody3D();
-        staticBody.AddChild(CollisionShape);
-        staticBody.InputEvent += InputEvent;
-        AddChild(staticBody);
+        CollisionShape = GetNode<CollisionShape3D>("Collision/CollisionShape");
     }
-    
+
+    private void CollisionOnInputEvent(
+        Node camera,
+        InputEvent @event,
+        Vector3 eventPosition,
+        Vector3 normal,
+        long shapeIdx
+    )
+    {
+        UnhandledInputEvent?.Invoke(camera, @event, eventPosition, normal, shapeIdx);
+    }
+
     public void CreateCollision()
     {
-        CollisionShape ??= new CollisionShape3D();
-        var shape = Mesh.CreateTrimeshShape();
-        CollisionShape.Shape = shape;
+        if (CollisionShape is null)
+            throw new NullReferenceException();
+        CollisionShape.Shape = Mesh.CreateTrimeshShape();
     }
 
     public void Triangulate(ICollection<HexagonCell> cells)

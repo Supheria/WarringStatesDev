@@ -6,16 +6,16 @@ namespace WarringStates.Map;
 
 public sealed partial class HexagonGrid : Node3D
 {
-    private const float RayLength = 1000.0f;
     [Export]
     public int Width { get; set; } = 6;
+
     [Export]
     public int Height { get; set; } = 6;
+
     [Export]
     public PackedScene? CellPrefab { get; set; }
     private List<HexagonCell> Cells { get; } = [];
     private HexagonMesh? Mesh { get; set; }
-    // private PhysicsRayQueryParameters3D? RayQuery { get; set; }
 
     public override void _Ready()
     {
@@ -26,21 +26,27 @@ public sealed partial class HexagonGrid : Node3D
                 CreateCell(x, z);
             }
         }
-        Mesh = new HexagonMesh();
+        Mesh = GetNode<HexagonMesh>("HexagonMesh");
         Mesh.Triangulate(Cells);
-        // Mesh.SetSurfaceOverrideMaterial(
-        //     0,
-        //     new StandardMaterial3D { AlbedoColor = Colors.GreenYellow }
-        // );
-        Mesh.InputEvent += MeshOnInputEvent;
+        Mesh.UnhandledInputEvent += MeshOnUnhandledInputEvent;
         Mesh.CreateCollision();
-        AddChild(Mesh);
-        // Mesh.CreateTrimeshCollision();
     }
 
-    private void MeshOnInputEvent(Node camera, InputEvent @event, Vector3 eventPosition, Vector3 normal, long shapeIdx)
+    private void MeshOnUnhandledInputEvent(
+        Node camera,
+        InputEvent @event,
+        Vector3 eventPosition,
+        Vector3 normal,
+        long shapeIdx
+    )
     {
-        GD.Print(eventPosition);
+        if (@event is InputEventMouseButton mouseButton && mouseButton.IsPressed())
+        {
+            if (mouseButton.ButtonIndex == MouseButton.Left)
+            {
+                GD.Print(eventPosition);
+            }
+        }
     }
 
     public override void _Process(double delta) { }
@@ -62,28 +68,4 @@ public sealed partial class HexagonGrid : Node3D
         cell.Coordinate = HexagonCoordinate.FromOffsetCoordinate(x, z);
         cell.Content = cell.Coordinate.ToString();
     }
-
-    // public override void _UnhandledInput(InputEvent @event)
-    // {
-    //     if (@event is InputEventMouseButton mouseButton && mouseButton.IsPressed())
-    //     {
-    //         if (mouseButton.ButtonIndex == MouseButton.Left)
-    //         {
-    //             var camera = GetViewport().GetCamera3D();
-    //             var from = camera.ProjectRayOrigin(mouseButton.Position);
-    //             var to = from + camera.ProjectRayNormal(mouseButton.Position) * RayLength;
-    //             RayQuery = PhysicsRayQueryParameters3D.Create(from, to);
-    //         }
-    //     }
-    // }
-
-    // public override void _PhysicsProcess(double delta)
-    // {
-    //     if (RayQuery is null)
-    //         return;
-    //     var spaceState = GetWorld3D().DirectSpaceState;
-    //     var result = spaceState.IntersectRay(RayQuery);
-    //     GD.Print("ray cast:" + result["position"]);
-    //     RayQuery = null;
-    // }
 }

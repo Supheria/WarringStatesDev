@@ -1,8 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://ctd6d700nup07"]
+[gd_scene load_steps=5 format=3 uid="uid://ctd6d700nup07"]
 
 [ext_resource type="Script" uid="uid://d17mdpx5v2m3y" path="res://Scenes/HexagonGrid.cs" id="1_mgx0b"]
 [ext_resource type="PackedScene" uid="uid://do0oawdvunra4" path="res://Scenes/HexagonCell.tscn" id="2_xmqn8"]
+[ext_resource type="Script" uid="uid://cxaah5up57c3u" path="res://MapTools/HexagonMesh.cs" id="3_xmbrk"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_xmbrk"]
 
 [node name="HexagonGrid" type="Node3D"]
 script = ExtResource("1_mgx0b")
 CellPrefab = ExtResource("2_xmqn8")
+
+[node name="HexagonMesh" type="MeshInstance3D" parent="."]
+script = ExtResource("3_xmbrk")
+
+[node name="Collision" type="StaticBody3D" parent="HexagonMesh"]
+
+[node name="CollisionShape" type="CollisionShape3D" parent="HexagonMesh/Collision"]
+shape = SubResource("ConcavePolygonShape3D_xmbrk")
+
+[connection signal="input_event" from="HexagonMesh/Collision" to="HexagonMesh" method="CollisionOnInputEvent"]

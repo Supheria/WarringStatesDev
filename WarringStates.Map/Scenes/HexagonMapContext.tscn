@@ -1,9 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://mpo3rkjfale6"]
+[gd_scene load_steps=7 format=3 uid="uid://mpo3rkjfale6"]
 
 [ext_resource type="Script" uid="uid://pwopqq1ac4ae" path="res://Scenes/camera_3d.gd" id="1_c61vs"]
 [ext_resource type="Script" uid="uid://bm4hm5q6185bg" path="res://Scenes/HexagonMapContext.cs" id="1_p8uqv"]
 [ext_resource type="PackedScene" uid="uid://dkiah83yhhfwu" path="res://Assets/Meshes/Units/UnitProto.glb" id="1_wotyu"]
 [ext_resource type="PackedScene" uid="uid://ctd6d700nup07" path="res://Scenes/HexagonGrid.tscn" id="2_tu82p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p8uqv"]
+size = Vector3(0.700867, 1.06573, 0.365829)
 
 [sub_resource type="BoxMesh" id="BoxMesh_m3tgc"]
 
@@ -29,6 +32,12 @@ script = ExtResource("1_c61vs")
 
 [node name="UnitProto" parent="ForTest" instance=ExtResource("1_wotyu")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -1, 0)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="ForTest/UnitProto"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ForTest/UnitProto/CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0485474, 0.662312, 0.00207911)
+shape = SubResource("BoxShape3D_p8uqv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ForTest"]
 transform = Transform3D(3.115, 0, 0, 0, -0.065, 0, 0, 0, 4.115, 0, -0.411939, -0.801938)
