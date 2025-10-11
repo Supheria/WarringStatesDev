@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using Godot;
 
@@ -9,6 +10,24 @@ public sealed partial class HexagonMesh : MeshInstance3D
     private List<Vector3> Vertices { get; } = [];
     private List<Vector3> Normals { get; } = [];
     private List<int> Indices { get; } = [];
+    private CollisionShape3D? CollisionShape { get; set; }
+    public event CollisionObject3D.InputEventEventHandler InputEvent;
+
+    public override void _Ready()
+    {
+        CollisionShape ??= new CollisionShape3D();
+        var staticBody = new StaticBody3D();
+        staticBody.AddChild(CollisionShape);
+        staticBody.InputEvent += InputEvent;
+        AddChild(staticBody);
+    }
+    
+    public void CreateCollision()
+    {
+        CollisionShape ??= new CollisionShape3D();
+        var shape = Mesh.CreateTrimeshShape();
+        CollisionShape.Shape = shape;
+    }
 
     public void Triangulate(ICollection<HexagonCell> cells)
     {
@@ -44,7 +63,7 @@ public sealed partial class HexagonMesh : MeshInstance3D
         Normals.Add(normal);
         Normals.Add(normal);
     }
-    
+
     private static Vector3 GetTriangleNormal(Vector3 v1, Vector3 v2, Vector3 v3)
     {
         var side1 = v2 - v1;

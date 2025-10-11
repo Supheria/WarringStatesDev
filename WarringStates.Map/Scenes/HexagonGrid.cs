@@ -6,18 +6,16 @@ namespace WarringStates.Map;
 
 public sealed partial class HexagonGrid : Node3D
 {
+    private const float RayLength = 1000.0f;
     [Export]
     public int Width { get; set; } = 6;
-
     [Export]
     public int Height { get; set; } = 6;
-
     [Export]
     public PackedScene? CellPrefab { get; set; }
-
     private List<HexagonCell> Cells { get; } = [];
-
     private HexagonMesh? Mesh { get; set; }
+    // private PhysicsRayQueryParameters3D? RayQuery { get; set; }
 
     public override void _Ready()
     {
@@ -30,34 +28,19 @@ public sealed partial class HexagonGrid : Node3D
         }
         Mesh = new HexagonMesh();
         Mesh.Triangulate(Cells);
-        Mesh.SetSurfaceOverrideMaterial(
-            0,
-            new StandardMaterial3D { AlbedoColor = Colors.GreenYellow }
-        );
-        
-        
-        // Mesh.CreateTrimeshCollision();
-        var body = new StaticBody3D();
-        // var id = body.CreateShapeOwner(new GodotObject());
-        var shape = Mesh.Mesh.CreateTrimeshShape();
-        // shape.BackfaceCollision = false;
-        var collision = new CollisionShape3D();
-        collision.Shape = shape;
-        body.AddChild(collision);
-        // body.ShapeOwnerAddShape(id, shape);
-        Mesh.AddChild(body);
-        
-        body.InputEvent += BodyOnInputEvent;
-        
+        // Mesh.SetSurfaceOverrideMaterial(
+        //     0,
+        //     new StandardMaterial3D { AlbedoColor = Colors.GreenYellow }
+        // );
+        Mesh.InputEvent += MeshOnInputEvent;
+        Mesh.CreateCollision();
         AddChild(Mesh);
+        // Mesh.CreateTrimeshCollision();
     }
 
-    private void BodyOnInputEvent(Node camera, InputEvent @event, Vector3 eventPosition, Vector3 normal, long shapeIdx)
+    private void MeshOnInputEvent(Node camera, InputEvent @event, Vector3 eventPosition, Vector3 normal, long shapeIdx)
     {
-        if (@event is InputEventMouseButton)
-        {
-            GD.Print(eventPosition);
-        }
+        GD.Print(eventPosition);
     }
 
     public override void _Process(double delta) { }
@@ -73,20 +56,34 @@ public sealed partial class HexagonGrid : Node3D
         if (CellPrefab is null)
             throw new NullReferenceException();
         var cell = CellPrefab.Instantiate<HexagonCell>();
+        AddChild(cell);
+        Cells.Add(cell);
         cell.Position = pos;
         cell.Coordinate = HexagonCoordinate.FromOffsetCoordinate(x, z);
         cell.Content = cell.Coordinate.ToString();
-        AddChild(cell);
-        Cells.Add(cell);
     }
 
-    public override void _UnhandledInput(InputEvent @event)
-    {
-        // if (@event is InputEventMouseButton mouse)
-        // {
-        //     var camera = GetViewport().GetCamera3D();
-        //     var inputRay = 
-        // }
-        
-    }
+    // public override void _UnhandledInput(InputEvent @event)
+    // {
+    //     if (@event is InputEventMouseButton mouseButton && mouseButton.IsPressed())
+    //     {
+    //         if (mouseButton.ButtonIndex == MouseButton.Left)
+    //         {
+    //             var camera = GetViewport().GetCamera3D();
+    //             var from = camera.ProjectRayOrigin(mouseButton.Position);
+    //             var to = from + camera.ProjectRayNormal(mouseButton.Position) * RayLength;
+    //             RayQuery = PhysicsRayQueryParameters3D.Create(from, to);
+    //         }
+    //     }
+    // }
+
+    // public override void _PhysicsProcess(double delta)
+    // {
+    //     if (RayQuery is null)
+    //         return;
+    //     var spaceState = GetWorld3D().DirectSpaceState;
+    //     var result = spaceState.IntersectRay(RayQuery);
+    //     GD.Print("ray cast:" + result["position"]);
+    //     RayQuery = null;
+    // }
 }
