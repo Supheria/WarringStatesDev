@@ -47,8 +47,17 @@ public sealed partial class HexagonGrid : Node3D
         // body.ShapeOwnerAddShape(id, shape);
         Mesh.AddChild(body);
         
+        body.InputEvent += BodyOnInputEvent;
         
         AddChild(Mesh);
+    }
+
+    private void BodyOnInputEvent(Node camera, InputEvent @event, Vector3 eventPosition, Vector3 normal, long shapeIdx)
+    {
+        if (@event is InputEventMouseButton)
+        {
+            GD.Print(eventPosition);
+        }
     }
 
     public override void _Process(double delta) { }
